@@ -9,7 +9,7 @@ const userroutes= require('./routes/users')
 
 
 
-mongoose.connect("mongodb+srv://stuckmonstertruck:Mongodb7jhehe@cluster0.taezolz.mongodb.net/coursesell")
+mongoose.connect("mongodburi")
     .then(() => {
         console.log("Connected to MongoDB");
     })
