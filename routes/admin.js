@@ -1,41 +1,48 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
+const { admin, courses } = require('../db');
+const { adminmiddleware } = require('../middlewares'); 
 
 
 router.post('/signup', (req,res)=>{  
-    const {namee,password}=req.headers;
-    console.log("successfully recieved credentials");
-    const admin = {
-        namee: "Simran",
-        password: "21"
-    }
-     if(admin){
-     const {coursename,description,price} =req.body;
-     const newcourse =new course({coursename,description,price})
-    newcourse.save()
-    .then(() => {
-        res.status(201).send("course added successfully!");
+    const {username, password} = req.body;
+    console.log("successfully received credentials")
+    const newuser= new admin({username,password});
+    newuser.save().then(()=>
+    {
+       console.log("credentials saved successfully");
+    }).catch((err)=> {
+       console.error('error saving data:',err);
     })
-    .catch((error) => {
-        res.status(400).send("Error adding course: " + error.message);
-    });
-     }  
-     else{
-        console.log("you are not the admin :D");
-     }  
 })
 
-router.get('/checkcourse', async (req, res) => {
-    console.log("inside admin/checkcourse");
-    try {
-        const courses = await course.find({});
-        console.log("Course data:", courses);
-        res.json(courses);
-    } catch (err) {
-        console.log("Error reading data", err);
-        res.status(500).send("Error reading data");
-    }
-});
+router.post('/signin', async (req,res)=>{
+  const{username, password}=req.headers;
 
-module.exports =router;
+  res.json({
+    msg:'user logged in successfully'
+  })
+})
+
+
+router.post('/courses',adminmiddleware, async(req,res)=>{ 
+    const {username,password}=req.headers;
+    const {title, description, imagelink, price}=req.body;
+const newcourse= await courses.create({
+    title, description, imagelink, price
+});
+console.log(newcourse);
+res.json({
+    msg:'course created successfully', courseId: newcourse._id
+})
+})
+
+router.get('/courses',async (req,res)=>{
+    const courses=await courses.findOne({});
+    res.json({
+        courses:response
+    })
+})
+
+module.exports = router;
+
