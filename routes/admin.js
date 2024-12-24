@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { admin, courses } = require('../db');
-const { adminmiddleware } = require('../middlewares'); 
+const { adminmiddleware } = require('../middlewares');
 
 
 router.post('/signup', (req,res)=>{  

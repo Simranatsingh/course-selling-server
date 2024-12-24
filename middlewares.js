@@ -45,5 +45,7 @@ const { admin, users } = require('./db');
         }
     }
 
-    module.exports = adminmiddleware;
-module.exports = usersmiddleware;
+    module.exports = {
+        adminmiddleware,
+        usersmiddleware
+    };

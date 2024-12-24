@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const{users,courses}=require('../db');
-const{usermiddleware}=require('../middlewares');
+const { usersmiddleware } = require('../middlewares');
 
 
 router.post('/signin',usersmiddleware,async(req,res)=>{
@@ -98,7 +98,7 @@ router.post('/courses/:courseId',usersmiddleware,async (req,res)=>{
         }
     });
 
-router.get('/purchasedcourses',usermiddleware, async(req,res)=>{
+router.get('/purchasedcourses',usersmiddleware, async(req,res)=>{
     const {username,password}=req.body;
     try{
     const user= await users.findOne({username,password})
@@ -108,7 +108,12 @@ router.get('/purchasedcourses',usermiddleware, async(req,res)=>{
         });
     }
 
+    /home/simran/Downloads/practice space/course/routes/admin.js:41
+    const courses=await courses.findOne({});
+                  ^
 
+ReferenceError: Cannot access 'courses' before initialization
+    at /home/simran/Downloads/practice space/course/routes/admi
     const purchasedcourses= await courses.find({
         _id:{
             '$in':user.purchasedcourse
